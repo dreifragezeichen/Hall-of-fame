@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="de">
 <head>
@@ -129,8 +130,7 @@
     </tbody>
   </table>
 </div>
-   <a href="index.html">zurück zur Homepage </a>
-
+<a href="index.html">zurück zur Homepage</a>
 <script>
   function sortTable(n) {
     var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
@@ -173,6 +173,12 @@
     }
     table.querySelector("th:nth-child(" + (n+1) + ")").classList.toggle("asc", dir == "asc");
     table.querySelector("th:nth-child(" + (n+1) + ")").classList.toggle("desc", dir == "desc");
+
+    // Ränge neu berechnen
+    var rows = table.rows;
+    for (var i = 1; i < rows.length; i++) {
+      rows[i].getElementsByTagName("td")[0].innerHTML = i;
+    }
   }
 </script>
 
