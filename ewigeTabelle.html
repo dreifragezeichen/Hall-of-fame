@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ewige Tabelle</title>
+<style>
+  table {
+    border-collapse: collapse;
+    width: 100%;
+  }
+  th, td {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+  }
+  th {
+    cursor: pointer;
+  }
+  .asc:after {
+    content: "\25b2";
+    float: right;
+  }
+  .desc:after {
+    content: "\25bc";
+    float: right;
+  }
+</style>
+</head>
+<body>
+
+<table id="ewigeTabelle">
+  <thead>
+    <tr>
+      <th onclick="sortTable(0)" class="asc">Rang</th>
+      <th onclick="sortTable(1)" class="asc">Name</th>
+      <th onclick="sortTable(2)" class="asc">Punkte insgesamt</th>
+      <th onclick="sortTable(3)" class="asc">Richtige Tipps</th>
+      <th onclick="sortTable(4)" class="asc">Falsche Tipps</th>
+      <th onclick="sortTable(5)" class="asc">Echte Banken</th>
+      <th onclick="sortTable(6)" class="asc">Unechte Banken</th>
+      <th onclick="sortTable(7)" class="asc">Neuner-Tipp</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>1</td>
+      <td>Aaron</td>
+      <td>926</td>
+      <td>895</td>
+      <td>856</td>
+      <td>8</td>
+      <td>24</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>Jonathan</td>
+      <td>917</td>
+      <td>869</td>
+      <td>823</td>
+      <td>0</td>
+      <td>7</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>Titus</td>
+      <td>904</td>
+      <td>869</td>
+      <td>811</td>
+      <td>5</td>
+      <td>24</td>
+      <td>0</td>
+    </tr>
+    <!-- Hier weitere Zeilen für die anderen Spieler einfügen -->
+  </tbody>
+</table>
+
+<script>
+  function sortTable(n) {
+    var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+    table = document.getElementById("ewigeTabelle");
+    switching = true;
+    dir = "asc"; 
+    while (switching) {
+      switching = false;
+      rows = table.rows;
+      for (i = 1; i < (rows.length - 1); i++) {
+        shouldSwitch = false;
+        x = rows[i].getElementsByTagName("TD")[n];
+        y = rows[i + 1].getElementsByTagName("TD")[n];
+        if (dir == "asc") {
+          if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+            shouldSwitch= true;
+            break;
+          }
+        } else if (dir == "desc") {
+          if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+            shouldSwitch= true;
+            break;
+          }
+        }
+      }
+      if (shouldSwitch) {
+        rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+        switching = true;
+        switchcount ++;      
+      } else {
+        if (switchcount == 0 && dir == "asc") {
+          dir = "desc";
+          switching = true;
+        }
+      }
+    }
+    if (dir == "asc") {
+      document.getElementsByTagName("th")[n].className = "desc";
+    } else {
+      document.getElementsByTagName("th")[n].className = "asc";
+    }
+  }
+</script>
+
+</body>
+</html>
