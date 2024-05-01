@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ewige Tabelle</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+    padding: 20px;
+  }
+
+  .container {
+    max-width: 800px;
+    margin: 0 auto;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+
+  h1 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 20px;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+  }
+
+  th, td {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+    text-align: left;
+    position: relative;
+  }
+
+  th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+    cursor: pointer;
+  }
+
+  td {
+    background-color: #fff;
+  }
+
+  .asc:after {
+    content: "\25b2";
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  .desc:after {
+    content: "\25bc";
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  .gold {
+    background-color: gold;
+  }
+
+  .silver {
+    background-color: silver;
+  }
+
+  .bronze {
+    background-color: #cd7f32; /* bronze */
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>Ewige Tabelle</h1>
+  <table>
+    <thead>
+    <tr>
+      <th onclick="sortTable(0)" class="asc">Rang</th>
+      <th onclick="sortTable(1)" class="asc">Name</th>
+      <th onclick="sortTable(2)" class="asc">Punkte insgesamt</th>
+      <th onclick="sortTable(3)" class="asc">Richtige Tipps</th>
+      <th onclick="sortTable(4)" class="asc">Falsche Tipps</th>
+      <th onclick="sortTable(5)" class="asc">Echte Banken</th>
+      <th onclick="sortTable(6)" class="asc">Unechte Banken</th>
+      <th onclick="sortTable(7)" class="asc">Neuner-Tipp</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr class="gold">
+      <td>1</td>
+      <td>Aaron</td>
+      <td>926</td>
+      <td>895</td>
+      <td>856</td>
+      <td>8</td>
+      <td>24</td>
+      <td>0</td>
+    </tr>
+    <tr class="silver">
+      <td>2</td>
+      <td>Jonathan</td>
+      <td>917</td>
+      <td>869</td>
+      <td>823</td>
+      <td>0</td>
+      <td>7</td>
+      <td>0</td>
+    </tr>
+    <tr class="bronze">
+      <td>3</td>
+      <td>Titus</td>
+      <td>904</td>
+      <td>869</td>
+      <td>811</td>
+      <td>5</td>
+      <td>24</td>
+      <td>0</td>
+    </tr>
+    <!-- Weitere Tabellenzeilen hier einfügen -->
+    </tbody>
+  </table>
+</div>
+<a href="index.html">zurück zur Homepage</a>
+<script>
+  function sortTable(n) {
+    var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+    table = document.querySelector("table");
+    switching = true;
+    dir = "asc"; 
+    while (switching) {
+      switching = false;
+      rows = table.rows;
+      for (i = 1; i < (rows.length - 1); i++) {
+        shouldSwitch = false;
+        x = rows[i].getElementsByTagName("TD")[n];
+        y = rows[i + 1].getElementsByTagName("TD")[n];
+        if (dir == "asc") {
+          if (parseFloat(x.innerHTML) > parseFloat(y.innerHTML)) {
+            shouldSwitch= true;
+            break;
+          }
+        } else if (dir == "desc") {
+          if (parseFloat(x.innerHTML) < parseFloat(y.innerHTML)) {
+            shouldSwitch= true;
+            break;
+          }
+        }
+      }
+      if (shouldSwitch) {
+        rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+        switching = true;
+        switchcount ++;
+      } else {
+        if (switchcount == 0 && dir == "asc") {
+          dir = "desc";
+          switching = true;
+        }
+      }
+    }
+    var ths = document.getElementsByTagName("th");
+    for (var i = 0; i < ths.length; i++) {
+      ths[i].classList.remove("asc", "desc");
+    }
+    table.querySelector("th:nth-child(" + (n+1) + ")").classList.toggle("asc", dir == "asc");
+    table.querySelector("th:nth-child(" + (n+1) + ")").classList.toggle("desc", dir == "desc");
+
+    // Ränge neu berechnen
+    var rows = table.rows;
+    for (var i = 1; i < rows.length; i++) {
+      rows[i].getElementsByTagName("td")[0].innerHTML = i;
+    }
+  }
+</script>
+
+</body>
+</html>
